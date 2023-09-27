@@ -25,5 +25,3 @@ FROM golang:1.21.1 as dev
 WORKDIR /app
 RUN go install github.com/cosmtrek/air@latest
 CMD ["air"]
-
-#ファイルの変更が行われるたびにgo buildを行なってくれる便利なもの
