@@ -17,7 +17,7 @@ type task struct {
 	Status entity.TaskStatus `json:"status"`
 }
 
-func (lt *ListTask) ServeHTTP(w http.ResponseWriter, r http.Request) {
+func (lt *ListTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	tasks := lt.Store.All()
 	rsp := []task{}
