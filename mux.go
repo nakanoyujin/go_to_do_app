@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator"
+	"github.com/nakanoyujin/go_to_do_app/clock"
+	"github.com/nakanoyujin/go_to_do_app/config"
 	"github.com/nakanoyujin/go_to_do_app/handler"
 	"github.com/nakanoyujin/go_to_do_app/store"
 )
@@ -21,7 +24,7 @@ import (
 // 	return mux
 // }
 
-func NewMux() http.Handler {
+func NewMux(ctx context.Context, cfg *config.Config) (http.Handler, func(), error) {
 	mux := chi.NewRouter()
 	// chiはhttp.Handlerインターフェースを実装しているので同じような使い方ができる。
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
@@ -31,12 +34,21 @@ func NewMux() http.Handler {
 	})
 
 	v := validator.New()
-	at := &handler.AddTask{Store: store.Tasks, Validator: v}
+
+	db, cleanup, err := store.New(ctx, cfg)
+	if err != nil {
+		return nil, cleanup, err
+	}
+
+	r := store.Repository{Clocker: clock.RealClocker{}}
+
+	at := &handler.AddTask{DB: db, Repo: &r, Validator: v}
 
 	// mux.method は第一引数と関数を内部的にHandleFuncとして処理する。
 	mux.Post("/tasks", at.ServeHTTP)
-	lt := &handler.ListTask{Store: store.Tasks}
+
+	lt := &handler.ListTask{DB: db, Repo: r}
 	mux.Get("/tasks", lt.ServeHTTP)
 
-	return mux
+	return mux, cleanup, nil
 }

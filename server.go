@@ -49,3 +49,8 @@ func (s *Server) Run(ctx context.Context) error {
 	// グレースフルシャットダウンの終了を待つ。
 	return eg.Wait()
 }
+//go:build tools
+
+package main
+
+import _ "github.com/matryer/moq"
