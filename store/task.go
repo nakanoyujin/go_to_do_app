@@ -7,7 +7,7 @@ import (
 )
 
 // タスクをDBから取得する
-func (r *Repository) ListTask(ctx context.Context, db Queryer) (entity.Tasks, error) {
+func (r *Repository) ListTasks(ctx context.Context, db Queryer) (entity.Tasks, error) {
 	tasks := entity.Tasks{}
 	sql := `SELECT id, title, status, created, modified FROM task;`
 	if err := db.SelectContext(ctx, &tasks, sql); err != nil {

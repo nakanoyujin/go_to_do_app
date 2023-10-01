@@ -9,26 +9,26 @@ import (
 	"sync"
 )
 
-// Ensure, that ListTaskServiceMock does implement ListTaskService.
+// Ensure, that ListTasksServiceMock does implement ListTasksService.
 // If this is not the case, regenerate this file with moq.
-var _ ListTaskService = &ListTaskServiceMock{}
+var _ ListTasksService = &ListTasksServiceMock{}
 
-// ListTaskServiceMock is a mock implementation of ListTaskService.
+// ListTasksServiceMock is a mock implementation of ListTasksService.
 //
-//	func TestSomethingThatUsesListTaskService(t *testing.T) {
+//	func TestSomethingThatUsesListTasksService(t *testing.T) {
 //
-//		// make and configure a mocked ListTaskService
-//		mockedListTaskService := &ListTaskServiceMock{
+//		// make and configure a mocked ListTasksService
+//		mockedListTasksService := &ListTasksServiceMock{
 //			ListTasksFunc: func(ctx context.Context) (entity.Tasks, error) {
 //				panic("mock out the ListTasks method")
 //			},
 //		}
 //
-//		// use mockedListTaskService in code that requires ListTaskService
+//		// use mockedListTasksService in code that requires ListTasksService
 //		// and then make assertions.
 //
 //	}
-type ListTaskServiceMock struct {
+type ListTasksServiceMock struct {
 	// ListTasksFunc mocks the ListTasks method.
 	ListTasksFunc func(ctx context.Context) (entity.Tasks, error)
 
@@ -44,9 +44,9 @@ type ListTaskServiceMock struct {
 }
 
 // ListTasks calls ListTasksFunc.
-func (mock *ListTaskServiceMock) ListTasks(ctx context.Context) (entity.Tasks, error) {
+func (mock *ListTasksServiceMock) ListTasks(ctx context.Context) (entity.Tasks, error) {
 	if mock.ListTasksFunc == nil {
-		panic("ListTaskServiceMock.ListTasksFunc: method is nil but ListTaskService.ListTasks was just called")
+		panic("ListTasksServiceMock.ListTasksFunc: method is nil but ListTasksService.ListTasks was just called")
 	}
 	callInfo := struct {
 		Ctx context.Context
@@ -62,8 +62,8 @@ func (mock *ListTaskServiceMock) ListTasks(ctx context.Context) (entity.Tasks, e
 // ListTasksCalls gets all the calls that were made to ListTasks.
 // Check the length with:
 //
-//	len(mockedListTaskService.ListTasksCalls())
-func (mock *ListTaskServiceMock) ListTasksCalls() []struct {
+//	len(mockedListTasksService.ListTasksCalls())
+func (mock *ListTasksServiceMock) ListTasksCalls() []struct {
 	Ctx context.Context
 } {
 	var calls []struct {
